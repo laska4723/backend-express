@@ -1,0 +1,39 @@
+{
+  "name": "backend-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laska4723/backend-express.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laska4723/backend-express/issues"
+  },
+  "homepage": "https://github.com/laska4723/backend-express#readme",
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "express": "^4.21.2",
+    "prettier": "^3.6.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 120,
+    "tabWidth": 2,
+    "endOfLine": "auto"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.23",
+    "typescript": "^5.9.2"
+  }
+}
