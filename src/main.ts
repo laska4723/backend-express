@@ -1,24 +1,31 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
+import logger from './logger/pino.logger';
 
-const server = express();
-
+const app = express();
 const port = 2000;
 
-server.listen(port, () => {
-  console.log(`Server is started on port ${port}...`);
+app.use(express.json());
+
+app.get('/', (req: Request, res: Response) => {
+  logger.info('GET request received');
+  res.send('Hello World! GET');
 });
 
-server.get('/', (req, res) => {
-  console.log('Пришел запрос с методом GET');
-  res.send('Hello World!');
+app.post('/', (req: Request, res: Response) => {
+  logger.info('POST request received');
+  res.send('Hello World! POST');
 });
 
-server.post('/', (req, res) => {
-  console.log('Пришел запрос с методом POST');
-  res.send('Hello World!');
+app.put('/', (req: Request, res: Response) => {
+  logger.info('PUT request received');
+  res.send('Hello World! PUT');
 });
 
-server.put('/', (req, res) => {
-  console.log('Пришел запрос с методом PUT');
-  res.send('Hello World!');
+app.delete('/', (req: Request, res: Response) => {
+  logger.info('DELETE request received');
+  res.send('Hello World! DELETE');
+});
+
+app.listen(port, () => {
+  logger.info(`Server started on port ${port}`);
 });
