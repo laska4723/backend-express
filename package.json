@@ -4,7 +4,6 @@
   "scripts": {
     "start": "ts-node src/main.ts",
     "build": "tsc",
-    "serve": "node dist/main.js",
     "lint": "eslint src --max-warnings=0"
   },
   "dependencies": {
