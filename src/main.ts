@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import logger from './logger/pino.logger';
+import { logger } from './logger';
 
 const app = express();
 const port = 2000;

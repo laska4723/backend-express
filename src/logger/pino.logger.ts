@@ -8,6 +8,4 @@ const stream = pretty({
   ignore: 'pid,hostname',
 });
 
-const logger = pino(stream);
-
-export default logger;
+export const logger = pino(stream);
