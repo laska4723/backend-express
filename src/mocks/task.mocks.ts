@@ -6,9 +6,21 @@ export type MockTask = {
   description: string;
 };
 
-export const getMockTask = (maxCount = 1): MockTask[] => {
+export const getMockTask = (maxCount = 1): MockTask | MockTask[] | null => {
+  if (maxCount === 0) {
+    return null;
+  }
+
+  if (maxCount === 1) {
+    return {
+      id: faker.number.int({ min: 1, max: 100000 }),
+      title: faker.lorem.words({ min: 1, max: 5 }),
+      description: faker.lorem.paragraphs(),
+    };
+  }
+
   const tasks: MockTask[] = [];
-  const count = Math.floor(Math.random() * (maxCount + 1));
+  const count = faker.number.int({ min: 1, max: maxCount });
 
   for (let i = 0; i < count; i++) {
     tasks.push({
