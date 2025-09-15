@@ -1,25 +1,35 @@
 import express, { Request, Response } from 'express';
 import { logger } from '../../logger';
 import { getMockDepartment } from '../../mocks';
+import { validate } from '../../validation';
+import { CreateDepartmentBodyDto } from './dto';
 
 export const departmentRouter = express.Router();
 
-departmentRouter.get('/department', (req: Request, res: Response) => {
+departmentRouter.get('/', (req: Request, res: Response) => {
   logger.info('GET request received');
+
   res.json(getMockDepartment());
 });
 
-departmentRouter.post('/department', (req: Request, res: Response) => {
-  logger.info('POST request received');
+departmentRouter.post('/', (req: Request, res: Response) => {
+  logger.info('Создание задачи');
+
+  const dto = validate(CreateDepartmentBodyDto, req.body);
+
+  console.log(req.body);
+
   res.json(getMockDepartment());
 });
 
-departmentRouter.put('/department/:id', (req: Request, res: Response) => {
+departmentRouter.put('/:id', (req: Request, res: Response) => {
   logger.info('PUT request received');
+
   res.json({ success: true });
 });
 
-departmentRouter.delete('/department/:id', (req: Request, res: Response) => {
+departmentRouter.delete('/:id', (req: Request, res: Response) => {
   logger.info('DELETE request received');
+
   res.json({ success: true });
 });

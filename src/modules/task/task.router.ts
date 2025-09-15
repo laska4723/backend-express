@@ -1,40 +1,57 @@
 import express, { Request, Response } from 'express';
 import { logger } from '../../logger';
 import { getMockTask } from '../../mocks';
+import { validate } from '../../validation';
+import { CreateTaskDto, UpdateTaskDto } from './dto';
 
 export const taskRouter = express.Router();
 
-taskRouter.get('/task', (req: Request, res: Response) => {
+taskRouter.get('/', (req: Request, res: Response) => {
   logger.info('GET request received');
+
   res.json(getMockTask());
 });
 
-taskRouter.get('/task/id', (req: Request, res: Response) => {
-  logger.info('GET request received');
-  res.json(getMockTask());
-});
+taskRouter.post('/', (req: Request, res: Response) => {
+  logger.info('Создание задачи');
 
-taskRouter.get('/task/authored', (req: Request, res: Response) => {
-  logger.info('GET request received');
-  res.json(getMockTask());
-});
+  const dto = validate(CreateTaskDto, req.body);
 
-taskRouter.get('/task/assigned', (req: Request, res: Response) => {
-  logger.info('GET request received');
-  res.json(getMockTask());
-});
+  console.log(req.body);
 
-taskRouter.post('/task', (req: Request, res: Response) => {
-  logger.info('POST request received');
   res.json(getMockTask(8));
 });
 
-taskRouter.put('/task/:id', (req: Request, res: Response) => {
-  logger.info('PUT request received');
+taskRouter.get('/:id', (req: Request, res: Response) => {
+  logger.info('GET request received');
+
+  res.json(getMockTask());
+});
+
+taskRouter.put('/:id', (req: Request, res: Response) => {
+  logger.info('Изменение задачи');
+
+  const dto = validate(UpdateTaskDto, req.body);
+
+  console.log(req.body);
+
   res.json({ success: true });
 });
 
-taskRouter.delete('/task/:id', (req: Request, res: Response) => {
+taskRouter.delete('/:id', (req: Request, res: Response) => {
   logger.info('DELETE request received');
+
   res.json({ success: true });
+});
+
+taskRouter.get('/authored', (req: Request, res: Response) => {
+  logger.info('GET request received');
+
+  res.json(getMockTask());
+});
+
+taskRouter.get('/assigned', (req: Request, res: Response) => {
+  logger.info('GET request received');
+
+  res.json(getMockTask());
 });
