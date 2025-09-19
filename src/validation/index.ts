@@ -1,5 +1,6 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
+import { BadRequestException } from '../exceptions';
 
 export const validate = <T extends object, V>(cls: ClassConstructor<T>, plain: V) => {
   const dto = plainToInstance(cls, plain);
@@ -8,7 +9,7 @@ export const validate = <T extends object, V>(cls: ClassConstructor<T>, plain: V
     const [{ constraints }] = errors;
 
     if (constraints) {
-      throw Error(Object.values(constraints)[0]);
+      throw new BadRequestException(Object.values(constraints)[0]);
     }
   }
 
