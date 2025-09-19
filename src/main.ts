@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
 import { logRoutes } from './bootstrap';
+import { appConfig } from './config';
 import { logger } from './logger';
 import { errorHandler, logMiddleware } from './middlewares';
 import { departmentRouter } from './modules/department/department.router';
@@ -19,10 +20,8 @@ server.use('/task', taskRouter); // Обработчики с нашей лог�
 
 server.use(errorHandler); // Обработчик ошибок
 
-const port = 2000;
-
-server.listen(port, () => {
-  logger.info(`Server started on port ${port}`);
+server.listen(appConfig.port, () => {
+  logger.info(`Server started on port ${appConfig.port}`);
 });
 
 logRoutes(server);
