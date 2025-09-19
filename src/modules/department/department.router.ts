@@ -13,7 +13,7 @@ departmentRouter.get('/', (req: Request, res: Response) => {
 });
 
 departmentRouter.post('/', (req: Request, res: Response) => {
-  logger.info('Создание задачи');
+  logger.info('Создание департамента');
 
   const dto = validate(CreateDepartmentBodyDto, req.body);
 

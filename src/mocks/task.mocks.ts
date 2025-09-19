@@ -6,8 +6,12 @@ export type MockTask = {
   description: string;
 };
 
-export const getMockTask = (maxCount = 1): MockTask | MockTask[] => {
-  if (!maxCount || maxCount === 1) {
+export const getMockTask = (maxCount = 1): MockTask | MockTask[] | {} => {
+  if (!maxCount) {
+    return {};
+  }
+
+  if (maxCount === 1) {
     return {
       id: faker.number.int({ min: 1, max: 100000 }),
       title: faker.lorem.words({ min: 1, max: 5 }),

@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { logger } from '../../logger';
 import { getMockTask } from '../../mocks';
+import { IdNumberDto } from '../../shared';
 import { validate } from '../../validation';
 import { CreateTaskDto, UpdateTaskDto } from './dto';
 
@@ -23,7 +24,10 @@ taskRouter.post('/', (req: Request, res: Response) => {
 });
 
 taskRouter.get('/:id', (req: Request, res: Response) => {
-  logger.info('GET request received');
+  const id = req.params.id;
+  const dto = validate(IdNumberDto, req.params);
+
+  logger.info(`Чтение задачи по id=${id}`);
 
   res.json(getMockTask());
 });
@@ -39,7 +43,10 @@ taskRouter.put('/:id', (req: Request, res: Response) => {
 });
 
 taskRouter.delete('/:id', (req: Request, res: Response) => {
-  logger.info('DELETE request received');
+  const id = req.params.id;
+  const dto = validate(IdNumberDto, req.params);
+
+  logger.info(`Удаление задачи по id=${id}`);
 
   res.json({ success: true });
 });
