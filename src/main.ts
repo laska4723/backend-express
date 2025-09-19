@@ -1,31 +1,28 @@
-import express, { Request, Response } from 'express';
+import 'reflect-metadata';
+import express from 'express';
+import { logRoutes } from './bootstrap';
 import { logger } from './logger';
+import { errorHandler, logMiddleware } from './middlewares';
+import { departmentRouter } from './modules/department/department.router';
+import { taskRouter } from './modules/task/task.router';
+import { userRouter } from './modules/user/user.router';
 
-const app = express();
+const server = express();
+
+server.use(express.json()); // Парсер тела в формате json
+
+server.use(logMiddleware); // Логирование запросов
+
+server.use('/department', departmentRouter); // Обработчики с нашей логикой
+server.use('/user', userRouter); // Обработчики с нашей логикой
+server.use('/task', taskRouter); // Обработчики с нашей логикой
+
+server.use(errorHandler); // Обработчик ошибок
+
 const port = 2000;
 
-app.use(express.json());
-
-app.get('/', (req: Request, res: Response) => {
-  logger.info('GET request received');
-  res.send('Hello World! GET');
-});
-
-app.post('/', (req: Request, res: Response) => {
-  logger.info('POST request received');
-  res.send('Hello World! POST');
-});
-
-app.put('/', (req: Request, res: Response) => {
-  logger.info('PUT request received');
-  res.send('Hello World! PUT');
-});
-
-app.delete('/', (req: Request, res: Response) => {
-  logger.info('DELETE request received');
-  res.send('Hello World! DELETE');
-});
-
-app.listen(port, () => {
+server.listen(port, () => {
   logger.info(`Server started on port ${port}`);
 });
+
+logRoutes(server);
