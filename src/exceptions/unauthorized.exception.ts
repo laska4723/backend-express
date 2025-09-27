@@ -1,7 +1,7 @@
 export class UnauthorizedException extends Error {
   public readonly code = 401;
 
-  constructor(message = 'Unauthorized') {
+  constructor(message = 'Unauthorized Exception') {
     super(message);
   }
 }

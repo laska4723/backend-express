@@ -1,7 +1,7 @@
 export class TooManyRequestsException extends Error {
   public readonly code = 429;
 
-  constructor(message = 'Too Many Requests') {
+  constructor(message = 'Too Many Requests Exception') {
     super(message);
   }
 }

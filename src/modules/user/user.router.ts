@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { logger } from '../../logger';
+import logger from '../../logger';
 import { getMockUser } from '../../mocks';
 import { validate } from '../../validation';
 import { LoginUserDto, RegisterUserDto } from './dto';
