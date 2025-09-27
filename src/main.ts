@@ -1,28 +1,49 @@
 import 'reflect-metadata';
 import express from 'express';
+import { Container } from 'inversify';
 import { logRoutes } from './bootstrap';
-import { logger } from './logger';
+import { appConfig } from './config';
+import { NotFoundException } from './exceptions';
+import logger from './logger';
 import { errorHandler, logMiddleware } from './middlewares';
+import { DepartmentController } from './modules/department/department.controller';
+import { DepartmentModule } from './modules/department/department.module';
 import { departmentRouter } from './modules/department/department.router';
+import { TaskController } from './modules/task/task.controller';
+import { TaskModule } from './modules/task/task.module';
 import { taskRouter } from './modules/task/task.router';
+import { UserController } from './modules/user/user.controller';
+import { UserModule } from './modules/user/user.module';
 import { userRouter } from './modules/user/user.router';
 
-const server = express();
+const bootstrap = () => {
+  const appContainer = new Container();
+  appContainer.loadSync(DepartmentModule, UserModule, TaskModule);
 
-server.use(express.json()); // Парсер тела в формате json
+  const server = express();
 
-server.use(logMiddleware); // Логирование запросов
+  server.use(express.json()); // Парсер тела в формате json
 
-server.use('/department', departmentRouter); // Обработчики с нашей логикой
-server.use('/user', userRouter); // Обработчики с нашей логикой
-server.use('/task', taskRouter); // Обработчики с нашей логикой
+  server.use(logMiddleware); // Логирование запросов
 
-server.use(errorHandler); // Обработчик ошибок
+  const departmentController = appContainer.get(DepartmentController);
+  const taskController = appContainer.get(TaskController);
+  const userController = appContainer.get(UserController);
 
-const port = 2000;
+  server.use('/department', departmentRouter); // Обработчик с нашей логикой
+  server.use('/user', userRouter); // Обработчик с нашей логикой
+  server.use('/task', taskRouter); // Обработчик с нашей логикой
+  server.use((req, res, next) => {
+    next(new NotFoundException());
+  });
 
-server.listen(port, () => {
-  logger.info(`Server started on port ${port}`);
-});
+  server.use(errorHandler); // Обработчик ошибок
 
-logRoutes(server);
+  server.listen(appConfig.port, () => {
+    logger.info(`Server started on port ${appConfig.port}`);
+  });
+
+  logRoutes(server);
+};
+
+bootstrap();

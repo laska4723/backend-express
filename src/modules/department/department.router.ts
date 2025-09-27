@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { logger } from '../../logger';
+import logger from '../../logger';
 import { getMockDepartment } from '../../mocks';
 import { validate } from '../../validation';
 import { CreateDepartmentBodyDto } from './dto';
