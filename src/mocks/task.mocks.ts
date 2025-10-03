@@ -8,7 +8,7 @@ export type MockTask = {
 
 export const getMockTask = (maxCount = 1): MockTask | MockTask[] | {} => {
   if (!maxCount) {
-    return {};
+    return [];
   }
 
   if (maxCount === 1) {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { logger } from '../logger';
+import logger from '../logger';
 
 export const logRoutes = (server: any) => {
   const globalHandlers = server._router.stack;
