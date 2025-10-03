@@ -2,7 +2,6 @@ import { injectable } from 'inversify';
 import { UserEntity } from '../../database/entities/user.entity';
 import { UnauthorizedException } from '../../exceptions';
 import logger from '../../logger';
-import { getMockUser } from '../../mocks';
 import { LoginUserDto, RegisterUserDto } from './dto';
 
 @injectable()
@@ -33,6 +32,6 @@ export class UserService {
       throw new UnauthorizedException();
     }
 
-    return getMockUser();
+    return user;
   }
 }
