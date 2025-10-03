@@ -11,7 +11,7 @@ export class DepartmentController {
 
   constructor(
     @inject(DepartmentService)
-    private readonly DepartmentService: DepartmentService,
+    private readonly departmentService: DepartmentService,
   ) {
     this.router.post('/', (req: Request, res: Response) => this.create(req, res));
     this.router.get('/', (req: Request, res: Response) => this.getList(req, res));
@@ -23,13 +23,13 @@ export class DepartmentController {
   create(req: Request, res: Response) {
     const body = validate(CreateDepartmentBodyDto, req.body);
 
-    const department = this.DepartmentService.create(body);
+    const department = this.departmentService.create(body);
 
     res.json(department);
   }
 
   getList(req: Request, res: Response) {
-    const departments = this.DepartmentService.getList();
+    const departments = this.departmentService.getList();
 
     res.json(departments);
   }
@@ -37,7 +37,7 @@ export class DepartmentController {
   getOne(req: Request, res: Response) {
     const { id } = validate(IdNumberDto, req.params);
 
-    const department = this.DepartmentService.updateOne(id);
+    const department = this.departmentService.updateOne(id);
 
     res.json(department);
   }
@@ -45,7 +45,7 @@ export class DepartmentController {
   updateOne(req: Request, res: Response) {
     const { id } = validate(IdNumberDto, req.params);
 
-    const department = this.DepartmentService.updateOne(id);
+    const department = this.departmentService.updateOne(id);
 
     res.json(department);
   }
@@ -53,7 +53,7 @@ export class DepartmentController {
   deleteOne(req: Request, res: Response) {
     const { id } = validate(IdNumberDto, req.params);
 
-    const success = this.DepartmentService.deleteOne(id);
+    const success = this.departmentService.deleteOne(id);
 
     res.json(success);
   }
