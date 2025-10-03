@@ -16,18 +16,18 @@ export class UserController {
     this.router.post('/register', (req: Request, res: Response) => this.register(req, res));
   }
 
-  login(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     const body = validate(LoginUserDto, req.body);
 
-    const user = this.userService.login(body);
+    const user = await this.userService.login(body);
 
     res.json(user);
   }
 
-  register(req: Request, res: Response) {
+  async register(req: Request, res: Response) {
     const body = validate(RegisterUserDto, req.body);
 
-    const user = this.userService.register(body);
+    const user = await this.userService.register(body);
 
     res.json(user);
   }
