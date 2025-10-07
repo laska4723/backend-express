@@ -2,7 +2,7 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import { TaskSeverity, TaskStatus } from '../../modules/task/task.enums';
 
 @Table({ tableName: 'tasks' })
-export class UserEntity extends Model {
+export class TaskEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -25,7 +25,4 @@ export class UserEntity extends Model {
 
   @Column({ type: DataType.STRING, allowNull: false })
   public author: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  public assignee: string;
 }

@@ -1,7 +1,7 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({ tableName: 'departments' })
-export class UserEntity extends Model {
+export class DepartmentEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,

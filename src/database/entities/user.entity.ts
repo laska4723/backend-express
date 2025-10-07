@@ -18,7 +18,4 @@ export class UserEntity extends Model {
 
   @Column({ type: DataType.STRING, allowNull: false })
   public password: string;
-
-  // @Column({ type: DataType.STRING, allowNull: false })
-  // public department?: string;
 }
