@@ -30,10 +30,6 @@ const bootstrap = async () => {
   const taskController = appContainer.get(TaskController);
   const userController = appContainer.get(UserController);
 
-  // server.use('/department', departmentRouter); // Обработчик с нашей логикой
-  // server.use('/user', userRouter); // Обработчик с нашей логикой
-  // server.use('/task', taskRouter); // Обработчик с нашей логикой
-
   server.use('/department', departmentController.router);
   server.use('/user', userController.router);
   server.use('/task', taskController.router);

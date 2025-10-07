@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
+import { appConfig } from '../config';
 import logger from '../logger';
 import { UserEntity } from './entities/user.entity';
 
@@ -7,11 +8,11 @@ export const connectToPostgres = async () => {
     dialect: 'postgres',
     logging: false,
 
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'postgrespassword',
-    database: 'backend',
+    port: appConfig.pgPort,
+    host: appConfig.pgHost,
+    username: appConfig.pgUsername,
+    password: appConfig.pgPassword,
+    database: appConfig.pgDatabase,
   });
 
   connection.addModels([UserEntity]);
