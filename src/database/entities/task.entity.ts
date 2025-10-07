@@ -22,7 +22,4 @@ export class TaskEntity extends Model {
 
   @Column({ type: DataType.STRING, allowNull: false })
   public severity: TaskSeverity;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  public author: string;
 }
