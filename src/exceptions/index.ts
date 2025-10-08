@@ -4,3 +4,4 @@ export * from './forbidden.exception';
 export * from './unauthorized.exception';
 export * from './too-many-requests.exception';
 export * from './conflict.exception';
+export * from './i-am-a-teapot.exception';
