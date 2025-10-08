@@ -3,7 +3,7 @@ import { injectable } from 'inversify';
 import { UserEntity } from '../../database/entities/user.entity';
 import { IAmATeapotException, UnauthorizedException } from '../../exceptions';
 import logger from '../../logger';
-import { ChangePasswordUserDto, LoginUserDto, RegisterUserDto } from './dto';
+import { LoginUserDto, PasswordChangeUserDto, RegisterUserDto } from './dto';
 
 @injectable()
 export class UserService {
@@ -39,7 +39,7 @@ export class UserService {
     return user;
   }
 
-  async change(dto: ChangePasswordUserDto) {
+  async passwordChange(dto: PasswordChangeUserDto) {
     logger.info(`Изменение пароля пользователя (email="${dto.email}")`);
 
     const user = await UserEntity.findOne({
@@ -47,16 +47,12 @@ export class UserService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('Пользователь не найден');
+      throw new UnauthorizedException();
     }
 
-    // const isPasswordValid = await compare(dto.oldPassword, user.password);
-    // if (!isPasswordValid) {
-    //   throw new IAmATeapotException('Неверный старый пароль');
-    // }
-
-    if (dto.oldPassword !== user.password) {
-      throw new IAmATeapotException('Неверный старый пароль');
+    const isPasswordValid = await compare(dto.oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new IAmATeapotException();
     }
 
     user.password = await hash(dto.newPassword, 10);
@@ -64,6 +60,6 @@ export class UserService {
 
     logger.info('Пароль успешно изменён');
 
-    return user;
+    return { message: 'Пароль успешно изменён' };
   }
 }
