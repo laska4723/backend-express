@@ -20,10 +20,10 @@ export class TaskController {
     this.router.delete('/:id', (req: Request, res: Response) => this.deleteOne(req, res));
   }
 
-  create(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     const body = validate(CreateTaskDto, req.body);
 
-    const task = this.taskService.create(body);
+    const task = await this.taskService.create(body);
 
     res.json(task);
   }

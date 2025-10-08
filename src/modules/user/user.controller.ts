@@ -14,7 +14,7 @@ export class UserController {
   ) {
     this.router.post('/login', (req: Request, res: Response) => this.login(req, res));
     this.router.post('/register', (req: Request, res: Response) => this.register(req, res));
-    this.router.post('/password/change', (req: Request, res: Response) => this.passwordChange(req, res));
+    this.router.put('/password/change', (req: Request, res: Response) => this.passwordChange(req, res));
   }
 
   async login(req: Request, res: Response) {
