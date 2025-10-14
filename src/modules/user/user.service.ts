@@ -12,13 +12,11 @@ export class UserService {
 
     const hashedPassword = await hash(dto.password, 10);
 
-    const user = await UserEntity.create({
+    return await UserEntity.create({
       name: dto.name,
       email: dto.email,
       password: hashedPassword,
     });
-
-    return user;
   }
 
   async login(dto: LoginUserDto) {
@@ -60,6 +58,6 @@ export class UserService {
 
     logger.info('Пароль успешно изменён');
 
-    return { message: 'Пароль успешно изменён' };
+    return user;
   }
 }

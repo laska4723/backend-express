@@ -1,25 +1,22 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { TaskSeverity, TaskStatus } from '../task.enums';
 
 export class UpdateTaskDto {
   @IsString()
   @IsNotEmpty({ message: 'Название обязательно' })
-  title?: string;
+  newTitle: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Описание обязательно' })
-  @IsOptional()
-  description?: string;
+  newDescription: string;
 
   @IsEnum(TaskSeverity, {
     message: `severity должен быть одним из: ${Object.values(TaskSeverity)}`,
   })
-  @IsOptional()
-  severity?: TaskSeverity;
+  newSeverity: TaskSeverity;
 
   @IsEnum(TaskStatus, {
     message: `status должен быть одним из: ${Object.values(TaskStatus)}`,
   })
-  @IsOptional()
-  status?: TaskStatus;
+  newStatus: TaskStatus;
 }
