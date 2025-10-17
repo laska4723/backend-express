@@ -1,17 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-
-enum SortDirection {
-  asc = 'asc',
-  desc = 'desc',
-}
-
-enum SortBy {
-  id = 'id',
-  title = 'title',
-  description = 'description',
-  createdAt = 'createdAt',
-}
+import { SortDirection } from '../../../shared';
+import { TaskSortBy } from '../task.enums';
 
 export class FindAllTasksDto {
   @Type(() => Number)
@@ -28,9 +18,9 @@ export class FindAllTasksDto {
   @IsString()
   search?: string;
 
-  @IsEnum(SortBy)
+  @IsEnum(TaskSortBy)
   @IsOptional()
-  sortBy: SortBy = SortBy.createdAt;
+  sortBy: TaskSortBy = TaskSortBy.createdAt;
 
   @IsEnum(SortDirection)
   @IsOptional()

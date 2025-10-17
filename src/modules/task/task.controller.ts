@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { inject, injectable } from 'inversify';
 import { IdNumberDto } from '../../shared';
 import { validate } from '../../validation';
-import { CreateTaskDto, FindAllTasksDto, UpdateTaskDto } from './dto';
+import { CreateTaskDto, FindAllTasksDto } from './dto';
 import { TaskService } from './task.service';
 
 @injectable()
@@ -53,7 +53,7 @@ export class TaskController {
 
   async updateOne(req: Request, res: Response) {
     const { id } = validate(IdNumberDto, req.params);
-    const body = validate(UpdateTaskDto, req.body);
+    const body = validate(CreateTaskDto, req.body);
 
     const task = await this.taskService.updateOne(id, body);
 
