@@ -9,3 +9,10 @@ export enum TaskStatus {
   IN_PROGRESS = 'in_progress',
   DONE = 'done',
 }
+
+export enum TaskSortBy {
+  id = 'id',
+  title = 'title',
+  description = 'description',
+  createdAt = 'createdAt',
+}
