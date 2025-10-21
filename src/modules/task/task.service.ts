@@ -1,4 +1,5 @@
 import { injectable } from 'inversify';
+import { Op, WhereOptions } from 'sequelize';
 import { TaskEntity } from '../../database/entities/task.entity';
 import { NotFoundException } from '../../exceptions';
 import logger from '../../logger';
@@ -20,14 +21,17 @@ export class TaskService {
   async getList(dto: FindAllTasksDto) {
     logger.info(`Чтение списка задач`);
 
-    // let where: WhereOptions = {};
+    let where: WhereOptions = {};
 
-    // if (dto.search) {
-    //   const search = `%${dto.search}%`;
-    //   where[Op.or] = [{ title: { [Op.like]: search } }, { description: { [Op.like]: search } }];
-    //  }
+    if (dto.search) {
+      const search = `%${dto.search}%`;
+      where = {
+        [Op.or]: [{ title: { [Op.iLike]: search } }, { description: { [Op.iLike]: search } }],
+      };
+    }
 
     const { rows, count } = await TaskEntity.findAndCountAll({
+      where,
       limit: dto.limit,
       offset: dto.offset,
       order: [[dto.sortBy, dto.sortDirection]],
