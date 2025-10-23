@@ -25,4 +25,8 @@ export class AppConfigDto {
   @IsString()
   @IsNotEmpty()
   pgDatabase: string;
+
+  @IsString()
+  @IsNotEmpty()
+  redisUrl: string;
 }

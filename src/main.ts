@@ -3,6 +3,7 @@ import 'express-async-errors';
 import express from 'express';
 import { Container } from 'inversify';
 import { logRoutes } from './bootstrap';
+import { CacheModule } from './cache/cache.module';
 import { appConfig } from './config';
 import { connectToPostgres } from './database';
 import { NotFoundException } from './exceptions';
@@ -18,7 +19,7 @@ import { UserModule } from './modules/user/user.module';
 const bootstrap = async () => {
   await connectToPostgres();
   const appContainer = new Container();
-  appContainer.loadSync(DepartmentModule, UserModule, TaskModule);
+  appContainer.loadSync(DepartmentModule, UserModule, TaskModule, CacheModule);
 
   const server = express();
 
