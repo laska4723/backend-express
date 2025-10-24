@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SetOptions } from '@redis/client';
 import { injectable } from 'inversify';
 import { createClient } from 'redis';
