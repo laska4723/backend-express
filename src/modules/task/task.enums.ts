@@ -16,3 +16,8 @@ export enum TaskSortBy {
   description = 'description',
   createdAt = 'createdAt',
 }
+
+export enum SortDirection {
+  asc = 'asc',
+  desc = 'desc',
+}

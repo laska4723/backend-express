@@ -1,5 +1,6 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Op, WhereOptions } from 'sequelize';
+import { CacheService } from '../../cache/cache.service';
 import { TaskEntity } from '../../database/entities/task.entity';
 import { NotFoundException } from '../../exceptions';
 import logger from '../../logger';
@@ -7,6 +8,7 @@ import { CreateTaskDto, FindAllTasksDto } from './dto';
 
 @injectable()
 export class TaskService {
+  constructor(@inject(CacheService) private readonly cacheService: CacheService) {}
   async create(dto: CreateTaskDto) {
     logger.info(`Создание новой задачи "${dto.title}"`);
 

@@ -11,6 +11,7 @@ const rawAppConfig = {
   pgUsername: process.env.PG_USERNAME,
   pgPassword: process.env.PG_PASSWORD,
   pgDatabase: process.env.PG_DATABASE,
+  redisUrl: process.env.REDIS_URL,
 };
 
 export const appConfig = validate(AppConfigDto, rawAppConfig);
