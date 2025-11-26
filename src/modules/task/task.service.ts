@@ -20,8 +20,6 @@ export class TaskService {
       status: dto.status,
     });
 
-    await this.cacheService.delete('tasks:list');
-
     return task;
   }
 
@@ -29,6 +27,7 @@ export class TaskService {
     logger.info(`Чтение списка задач`);
 
     const cache = await this.cacheService.redis.get(allTaskCacheKeys(dto));
+
     if (cache) {
       return JSON.parse(cache);
     }
@@ -42,16 +41,18 @@ export class TaskService {
       };
     }
 
-    const { rows, count } = await TaskEntity.findAndCountAll({
+    const tasks = await TaskEntity.findAndCountAll({
       where,
       limit: dto.limit,
       offset: dto.offset,
       order: [[dto.sortBy, dto.sortDirection]],
     });
 
-    await this.cacheService.redis.set(allTaskCacheKeys(dto), JSON.stringify(rows));
+    await this.cacheService.redis.set(allTaskCacheKeys(dto), JSON.stringify(tasks), {
+      expiration: { type: 'EX', value: 3600 },
+    });
 
-    return { total: count, data: rows };
+    return tasks;
   }
 
   async getOne(id: TaskEntity['id']) {
@@ -67,7 +68,7 @@ export class TaskService {
     });
 
     if (!task) {
-      throw new NotFoundException(`Task with id [${id}] not exist`);
+      throw new NotFoundException();
     }
 
     await this.cacheService.redis.set(oneTaskCacheKey(id), JSON.stringify(task), {
@@ -82,7 +83,17 @@ export class TaskService {
 
     const task = await this.getOne(id);
 
+    if (!task) {
+      throw new NotFoundException();
+    }
+
     await task.update(dto);
+
+    await this.cacheService.redis.del(oneTaskCacheKey(id));
+
+    await this.cacheService.redis.set(oneTaskCacheKey(id), JSON.stringify(task), {
+      expiration: { type: 'EX', value: 3600 },
+    });
 
     return task;
   }
@@ -92,8 +103,17 @@ export class TaskService {
 
     const task = await this.getOne(id);
 
+    if (!task) {
+      throw new NotFoundException();
+    }
+
     await task.destroy();
+
     await this.cacheService.redis.del(oneTaskCacheKey(id));
+
+    await this.cacheService.redis.set(oneTaskCacheKey(id), JSON.stringify(task), {
+      expiration: { type: 'EX', value: 3600 },
+    });
 
     return task;
   }
