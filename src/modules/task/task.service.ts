@@ -26,7 +26,9 @@ export class TaskService {
   async getList(dto: FindAllTasksDto) {
     logger.info(`Чтение списка задач`);
 
-    const cache = await this.cacheService.redis.get(allTaskCacheKeys(dto));
+    const AllCacheKey = allTaskCacheKeys(dto);
+
+    const cache = await this.cacheService.redis.get(AllCacheKey);
 
     if (cache) {
       return JSON.parse(cache);
@@ -48,17 +50,24 @@ export class TaskService {
       order: [[dto.sortBy, dto.sortDirection]],
     });
 
-    await this.cacheService.redis.set(allTaskCacheKeys(dto), JSON.stringify(tasks), {
+    const result = {
+      total: tasks.count,
+      data: tasks.rows.map((task) => task.toJSON()),
+    };
+
+    await this.cacheService.redis.set(AllCacheKey, JSON.stringify(result), {
       expiration: { type: 'EX', value: 3600 },
     });
 
-    return tasks;
+    return result;
   }
 
   async getOne(id: TaskEntity['id']) {
     logger.info(`Чтение задачи по id=${id}`);
 
-    const cache = await this.cacheService.redis.get(oneTaskCacheKey(id));
+    const cacheKey = oneTaskCacheKey(id);
+
+    const cache = await this.cacheService.redis.get(cacheKey);
     if (cache) {
       return JSON.parse(cache);
     }
@@ -71,7 +80,7 @@ export class TaskService {
       throw new NotFoundException();
     }
 
-    await this.cacheService.redis.set(oneTaskCacheKey(id), JSON.stringify(task), {
+    await this.cacheService.redis.set(cacheKey, JSON.stringify(task), {
       expiration: { type: 'EX', value: 3600 },
     });
 
@@ -83,17 +92,16 @@ export class TaskService {
 
     const task = await this.getOne(id);
 
-    if (!task) {
-      throw new NotFoundException();
-    }
-
     await task.update(dto);
+    await task.reload();
 
-    await this.cacheService.redis.del(oneTaskCacheKey(id));
+    const cacheKey = oneTaskCacheKey(id);
 
-    await this.cacheService.redis.set(oneTaskCacheKey(id), JSON.stringify(task), {
-      expiration: { type: 'EX', value: 3600 },
-    });
+    const cached = await this.cacheService.redis.get(cacheKey);
+
+    if (cached !== null) {
+      await this.cacheService.redis.set(cacheKey, JSON.stringify(task), { expiration: { type: 'EX', value: 3600 } });
+    }
 
     return task;
   }
@@ -109,11 +117,9 @@ export class TaskService {
 
     await task.destroy();
 
-    await this.cacheService.redis.del(oneTaskCacheKey(id));
+    const cacheKey = oneTaskCacheKey(id);
 
-    await this.cacheService.redis.set(oneTaskCacheKey(id), JSON.stringify(task), {
-      expiration: { type: 'EX', value: 3600 },
-    });
+    await this.cacheService.redis.del(cacheKey);
 
     return task;
   }
