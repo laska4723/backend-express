@@ -30,10 +30,6 @@ export class UserService {
 
     const userDomain = dto.email.split('@')[1];
 
-    const { data } = await axios.get<string>(
-      'https://github.com/disposable/disposable-email-domains/blob/master/domains.txt',
-    );
-
     if (this.tmpDomains.includes(userDomain)) {
       throw new BadRequestException('Registration with a temporary email is not possible');
     }
