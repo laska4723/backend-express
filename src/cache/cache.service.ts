@@ -7,7 +7,7 @@ import logger from '../logger';
 
 @injectable()
 export class CacheService {
-  private readonly redis = createClient({ url: appConfig.redisUrl });
+  public readonly redis = createClient({ url: appConfig.redisUrl });
 
   constructor() {
     this.connect();
