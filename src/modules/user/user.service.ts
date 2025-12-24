@@ -9,7 +9,7 @@ import { LoginUserDto, PasswordChangeUserDto, RegisterUserDto } from './dto';
 
 @injectable()
 export class UserService {
-  private readonly updateTmpDomainsJob = new CronJob('0 */12 * * *', () => this.loadTmpDomains(), null, true);
+  private readonly updateTmpDomainsJob = new CronJob('0 * * * *', () => this.loadTmpDomains(), null, true);
 
   private tmpDomains: string[] = [];
 
